@@ -78,10 +78,14 @@ export default function GridCourse() {
       )}
 
       {/* Guided Navigation */}
-      <div className="guided-nav" style={{ marginTop: '60px', paddingTop: '30px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'flex-start'}}>
+      <div className="guided-nav" style={{ marginTop: '60px', paddingTop: '30px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between'}}>
         <Link to="/flex" className="nav-breadcrumb flex-breadcrumb" style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', textDecoration:'none', padding: '16px 24px', background: 'rgba(124,106,255,.06)', border: '1px solid rgba(124,106,255,.2)', borderRadius: 'var(--radius)' }}>
           <span style={{ fontSize: '.75rem', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--text-dim)', marginBottom:'4px'}}>➔ Previous Module</span>
           <span style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--accent-flex2)'}}>CSS Flexbox</span>
+        </Link>
+        <Link to="/units" className="nav-breadcrumb" style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-end', textDecoration:'none', padding: '16px 24px', background: 'rgba(255, 82, 119, 0.06)', border: '1px solid rgba(255, 82, 119, 0.2)', borderRadius: 'var(--radius)' }}>
+          <span style={{ fontSize: '.75rem', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--text-dim)', marginBottom:'4px'}}>Next Module ➔</span>
+          <span style={{ fontSize: '1.2rem', fontWeight: 600, color: '#ff5277'}}>CSS Units</span>
         </Link>
       </div>
     </div>

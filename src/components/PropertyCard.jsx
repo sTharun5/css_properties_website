@@ -145,8 +145,35 @@ function GridDemo({ prop, activeVal }) {
   );
 }
 
+// ── Unit Demo Renderer ─────────────────────────────────────
+function UnitDemo({ prop, activeVal }) {
+  const isWidth = prop.cssProperty === 'width';
+  const boxStyle = {
+    background: 'var(--accent-info)',
+    height: '50px',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 8px',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: '0.8rem',
+    borderRadius: '4px',
+    transition: 'all 0.3s ease',
+  };
+
+  if (isWidth) boxStyle.width = activeVal;
+
+  return (
+    <div className="demo-container" style={{ padding: '20px', background: 'var(--code-bg)', minHeight: '150px' }}>
+      <div style={boxStyle}>
+        {prop.isTextNode ? 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis.' : activeVal}
+      </div>
+    </div>
+  );
+}
+
 // ── PropertyCard ───────────────────────────────────────────
-export default function PropertyCard({ prop, isGrid }) {
+export default function PropertyCard({ prop, isGrid, isUnit }) {
   const [activeVal, setActiveVal] = useState(prop.default);
   const code = prop.getCode(activeVal);
 
@@ -185,7 +212,9 @@ export default function PropertyCard({ prop, isGrid }) {
             ))}
           </div>
           <div className="demo-stage">
-            {isGrid ? <GridDemo prop={prop} activeVal={activeVal} /> : <FlexDemo prop={prop} activeVal={activeVal} />}
+            {isUnit ? <UnitDemo prop={prop} activeVal={activeVal} /> : 
+             isGrid ? <GridDemo prop={prop} activeVal={activeVal} /> : 
+             <FlexDemo prop={prop} activeVal={activeVal} />}
           </div>
         </div>
       </div>

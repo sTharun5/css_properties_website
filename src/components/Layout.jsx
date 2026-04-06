@@ -13,6 +13,9 @@ export default function Layout() {
         <NavLink to="/grid" className={({ isActive }) => `nav-tab ${isActive ? 'active-grid' : ''}`}>
           <span className="nav-dot nav-dot-grid" /> Grid Module
         </NavLink>
+        <NavLink to="/units" className={({ isActive }) => `nav-tab ${isActive ? 'active-units' : ''}`}>
+          <span className="nav-dot nav-dot-units" style={{background:'#ff5277', boxShadow:'0 0 8px #ff5277'}} /> CSS Units
+        </NavLink>
       </nav>
 
       {/* Main layout now uses the app-two-col grid */}
@@ -50,6 +53,13 @@ export default function Layout() {
             </NavLink>
             <NavLink to="/grid?level=Advanced" className={({ isActive }) => `sidebar-link grid-link ${isActive ? 'active-sidebar-grid-link' : ''}`}>
               <span className="sidebar-dot dot-item" /> Advanced & Patterns
+            </NavLink>
+          </div>
+
+          <div className="sidebar-group">
+            <div className="sidebar-level">Course 3</div>
+            <NavLink to="/units" className={({ isActive }) => `sidebar-link ${isActive ? 'active-sidebar-link' : ''}`} style={({isActive}) => isActive ? {borderLeftColor: '#ff5277', background: 'rgba(255, 82, 119, 0.05)', color: '#ff5277'} : {}}>
+              <span className="sidebar-dot dot-container" style={{borderColor: '#ff5277', background: 'transparent'}} /> CSS Units
             </NavLink>
           </div>
         </nav>
