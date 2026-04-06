@@ -240,7 +240,7 @@ body {
 }
 .applies-container { background: rgba(124,106,255,.15); color: var(--accent-flex2); border: 1px solid rgba(124,106,255,.3); }
 .applies-item { background: rgba(255,107,157,.12); color: #ff6b9d; border: 1px solid rgba(255,107,157,.3); }
-.prop-desc { color: var(--text-dim); font-size: .9rem; line-height: 1.6; flex: 1 1 100%; }
+.prop-desc { color: var(--text-dim); font-size: .9rem; line-height: 1.6; flex: 1 1 100%; white-space: pre-line; }
 
 /* ── SPLIT PANEL ── */
 .split-panel {
