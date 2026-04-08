@@ -6,7 +6,10 @@ function DescriptionBlock({ text, accentClass }) {
 
   const inlineFormat = (str) =>
     str
-      .replace(/`([^`]+)`/g, '<code class="desc-code">$1</code>')
+      .replace(/`([^`]+)`/g, (_, code) => {
+        const safe = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return `<code class="desc-code">${safe}</code>`;
+      })
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 
   // Split on <span></span> section boundaries used in data files

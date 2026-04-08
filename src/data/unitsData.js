@@ -1,15 +1,13 @@
-// All CSS Units — Absolute, Relative, and Viewport with Deep Explanations
+// All CSS Units — Absolute, Relative, and Viewport
 export const unitsSections = [
   {
     level: 'Absolute & Relative Basics',
     intro: {
-      title: '📏 Deep Dive: The Physics of CSS Units',
-      body: `Before we can layout elements using Flexbox or Grid, we must define their physical presence using CSS units. The CSS specification classifies length units into two primary categories: **Absolute** and **Relative**.
-      
-**The Rendering Pipeline:**
-When the browser engines (like WebKit or Blink) parse your CSS, they ultimately convert *every single unit* into raw physical device pixels before painting them to the monitor. This process is called "Computing the Values". 
+      title: '📏 Understanding CSS Units',
+      body: `Before laying out elements with Flexbox or Grid, you need to size them. CSS has two types of units: **Absolute** (like \`px\`) and **Relative** (like \`rem\`, \`em\`, \`%\`).
 
-Understanding how different relative units mathematically resolve themselves into those final absolute pixels is the secret to building resilient, scalable, and highly accessible web typography and layout architectures.`,
+**What the browser actually does:**
+No matter which unit you write, the browser converts everything to raw screen pixels before drawing it. Understanding how each unit calculates that conversion is the key to building layouts that scale well on every screen size.`,
     },
     properties: [
       {
@@ -17,20 +15,18 @@ Understanding how different relative units mathematically resolve themselves int
         name: 'px (Pixel)',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** The \`px\` unit is the most foundational measuring stick in CSS. However, it is an incredibly common misconception that 1 CSS Pixel equals 1 Hardware Monitor Pixel.
+        description: `\`px\` is the most common CSS unit. But one CSS pixel is not the same as one physical screen pixel — this is one of the most misunderstood things in CSS.
 <span></span>
-**The Screen Mathematics:**
-Due to high-density Retina/4K displays, the physical hardware pixels on your monitor are extremely tiny. If CSS \`px\` mapped 1-to-1 to hardware pixels, websites would render invisibly small on modern phones. 
-Instead, a CSS \`px\` is defined by the W3C as a **Reference Pixel**, representing the visual angle of one pixel on a device with a pixel density of 96dpi, held at arm's length. 
-Consequently, on an iPhone Retina display (which has a device pixel ratio of 3), an element mathematically sized at \`width: 100px\` in CSS is actually painted by the GPU using exactly **300 physical light-emitting diodes** on the phone screen.
+**Why it's different on modern screens:**
+High-density screens (like Retina displays) pack far more physical pixels per inch than older monitors. If \`1px\` mapped to one physical pixel, websites would look tiny on phones. Instead, the browser uses a "reference pixel" — a standard visual size. On a phone with a 3× screen density, \`width: 100px\` actually uses 300 physical pixels to draw.
 <span></span>
-**When to use:**
-Pixels should almost **never** be used for font sizes because it completely overrides the user's browser accessibility settings for vision impairment. Pixels should be strictly reserved for microscopic decorative elements like \`border-width: 1px\` or \`box-shadow\`.`,
+**When to use px:**
+Use \`px\` for small decorative details — like \`border: 1px solid\` or \`box-shadow\` offsets. Avoid it for font sizes. A hardcoded pixel font size ignores the user's browser text-size settings, which breaks accessibility for people who need larger text.`,
         values: ['10px', '50px', '100px'],
         default: '100px',
-        practice: 'Use `border: 1px solid red` for debugging. Resist using px for fonts!',
+        practice: 'Use `border: 1px solid red` for debugging layouts. Avoid px for fonts!',
         chips: [
-          { key: 'px', meaning: 'Absolute CSS Reference Pixel (NOT hardware pixel)' },
+          { key: 'px', meaning: 'CSS reference pixel (not hardware pixel)' },
         ],
         getCode: (val) => `.box {\n  width: ${val};\n  height: 50px;\n  background: var(--blue);\n}`,
         renderItems: 1,
@@ -40,21 +36,19 @@ Pixels should almost **never** be used for font sizes because it completely over
         name: 'em (Ephemeral Font-Size)',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** The \`em\` unit is a deeply contextual, relative unit. 1 \`em\` mathematically equates to the computed \`font-size\` of the element you are currently styling.
+        description: `\`1em\` equals the \`font-size\` of the element you're styling. If the element's font size is 20px, then \`1em = 20px\` and \`2em = 40px\`.
 <span></span>
-**The Compounding Trap:**
-If you set a parent \`div\` to \`font-size: 20px\`, and a child element inside it to \`font-size: 2em\`, the child's text renders at 40px (\`20 * 2\`). 
-However, if you nest *another* element inside that child, and set IT to \`2em\`, it calculates dynamically off its direct parent (which is 40px), resulting in 80px (\`40 * 2\`). This creates aggressive geometrical compounding bugs where text exponentially explodes in size.
+**The stacking problem:**
+If a parent has \`font-size: 20px\` and a child has \`font-size: 2em\` (= 40px), then a grandchild with \`font-size: 2em\` calculates from 40px — giving 80px. The sizes keep multiplying down the tree. This makes \`em\` risky for font sizes across nested elements.
 <span></span>
-**The Ideal Use-Case:**
-While terrible for establishing standard font-sizes due to the compounding trap, \`em\` is phenomenal for structural margins and paddings on modular components like Buttons. 
-If you set a button's padding to \`padding: 0.5em 1em\`, the padding creates a symbiotic mathematical relationship with the font size. If you later shrink the button's \`font-size\`, the padding dynamically shrinks perfectly proportional to the text, keeping the aesthetic aspect ratio immaculate without writing extra code.`,
+**Where em shines:**
+Use \`em\` for \`padding\` and \`margin\` on components like buttons. If a button has \`padding: 0.5em 1em\`, the padding automatically stays proportional when you change the font size — the button just scales nicely without extra CSS.`,
         values: ['1em', '2em', '4em', '10em'],
         default: '2em',
-        practice: 'Use `padding: 0.5em 1em` on buttons so the internal spacing automatically scales relative to the specific button\'s font size.',
+        practice: 'Use `padding: 0.5em 1em` on buttons so the padding scales automatically with the font size.',
         chips: [
           { key: 'em', meaning: 'Relative to current element\'s font-size' },
-          { key: 'compounding', meaning: 'Multiplies exponentially down the DOM tree' },
+          { key: 'compounding', meaning: 'Multiplies down nested elements' },
         ],
         getCode: (val) => `.box {\n  font-size: 16px; /* Base */\n  width: ${val}; /* Resolves to 16 * value */\n  height: 50px;\n  background: var(--pink);\n}`,
         renderItems: 1,
@@ -64,21 +58,19 @@ If you set a button's padding to \`padding: 0.5em 1em\`, the padding creates a s
         name: 'rem (Root em)',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** The absolute king of modern CSS typography. The \`rem\` unit functions identically to \`em\`, but completely circumvents the compounding bug because it exclusively derives its multiplication value from a single source of truth: the absolute root \`<html>\` element of the document.
+        description: `\`rem\` works like \`em\`, but always reads from one single source: the root \`html\` element. It never compounds down the tree — no stacking surprises.
 <span></span>
-**Accessibility & Best Practice:**
-By default, every standard web browser sets the root \`<html>\` font-size to mathematically evaluate to \`16px\` by default, unless a visually-impaired user modifies their browser settings. 
-If a user goes into Chrome Settings and changes their default font to \`24px\` because they are legally blind, a developer who hardcoded \`p { font-size: 16px }\` will completely override and break the user's accessibility tools, leaving the text unreadable.
-If the developer instead writes \`p { font-size: 1rem }\`, the layout engine consults the root. Because the user changed the root to 24px, \`1rem\` mathematically resolves to 24px, and the website remains perfectly accessible.
+**Why it matters for accessibility:**
+Browsers default to \`16px\` for the root font size. If a user sets their browser font to \`24px\` (for vision reasons), elements sized in \`rem\` automatically scale up. Elements hardcoded in \`px\` stay the same size and override the user's settings — breaking accessibility.
 <span></span>
-**The 62.5% Trick (Anti-pattern):**
-Some developers set \`html { font-size: 62.5%; }\` so that \`1rem\` equals exactly \`10px\` (because 62.5% of 16px default is 10). This makes mental math easier (\`2.4rem\` = 24px). However, modern designers usually discourage this; it's better to just accept \`16px\` as the standard baseline and use CSS variables or a calc engine.`,
+**The 62.5% trick:**
+Some developers write \`html { font-size: 62.5%; }\` so \`1rem = 10px\` (easier mental math). This is optional and slightly dated — just use \`rem\` with the default \`16px\` base and everything works fine.`,
         values: ['1rem', '2rem', '4rem', '10rem'],
         default: '2rem',
-        practice: 'Use `rem` for EVERYTHING related to typography layout: fonts, global margins, and major block structure!',
+        practice: 'Use `rem` for all font sizes, global margins, and layout spacing — it\'s the most accessible and predictable unit.',
         chips: [
-          { key: 'rem', meaning: 'Relative to ROOT (<html>) font-size only' },
-          { key: 'a11y', meaning: 'The only correct unit for accessible text sizing' },
+          { key: 'rem', meaning: 'Relative to root html font-size only' },
+          { key: 'a11y', meaning: 'Respects user browser text settings' },
         ],
         getCode: (val) => `.box {\n  /* html root assumed 16px */\n  width: ${val}; /* Resolves to 16 * value */\n  height: 50px;\n  background: var(--teal);\n}`,
         renderItems: 1,
@@ -93,22 +85,22 @@ Some developers set \`html { font-size: 62.5%; }\` so that \`1rem\` equals exact
         name: 'vw & vh (Viewport dimensions)',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** \`vw\` and \`vh\` represent a percentage slice of the browser's physical viewport geometry. \`1vw\` is exactly 1% of the viewport's width. \`100vh\` is exactly 100% of the viewport's height.
+        description: `\`vw\` is 1% of the browser window width. \`vh\` is 1% of the browser window height. \`100vw\` = full window width, \`100vh\` = full window height.
 <span></span>
-**The Mobile Safari Bug:**
-\`.hero { height: 100vh; }\` is famously bugged on iOS Safari and Chrome Android. When applying \`100vh\`, the browser engines naively calculate the total screen height spanning from the absolute top to absolute bottom... completely ignoring the dynamic URL toolbar overlay. Your actual webpage content extends down beneath the bottom toolbar UI, forcing an annoying scroll.
+**The iOS Safari bug:**
+\`height: 100vh\` is famously broken on mobile. iOS Safari and Android Chrome include the address bar in the viewport height — so your content gets partially hidden under the browser toolbar at the bottom.
 <span></span>
-**The Modern Fix (dvh / svh / lvh):**
-To rectify this historical flaw, CSS introduced new sub-variants:
-• \`svh\` (Small Viewport Height): The safe zone height when the URL mobile bar is fully expanded.
-• \`lvh\` (Large Viewport Height): The maximal height when the user scrolls and the URL bar retracts via animation.
-• \`dvh\` (Dynamic Viewport Height): The mathematically perfect algorithm. It smoothly recalculates in real-time between \`svh\` and \`lvh\` as the user's thumb moves the toolbar up and down.`,
+**The modern fix — dvh, svh, lvh:**
+CSS introduced new units to solve this properly:
+• \`svh\` — height when the toolbar is fully visible (safe minimum)
+• \`lvh\` — height when the toolbar is hidden (maximum)
+• \`dvh\` — updates in real time as the toolbar appears and disappears. Use this for app shells.`,
         values: ['10vw', '25vw', '50vw', '100vw'],
         default: '50vw',
-        practice: 'Never write 100vh on mobile anymore. Use the new standard: `height: 100dvh` for application shells!',
+        practice: 'Stop writing `height: 100vh` on mobile. Use `height: 100dvh` instead — it accounts for the mobile browser toolbar.',
         chips: [
-          { key: 'vw / vh', meaning: '1% of raw viewport width/height' },
-          { key: 'dvh', meaning: 'Dynamic calculation avoiding iOS toolbar bugs' },
+          { key: 'vw / vh', meaning: '1% of raw viewport width or height' },
+          { key: 'dvh', meaning: 'Dynamic — avoids iOS toolbar bugs' },
         ],
         getCode: (val) => `.box {\n  width: ${val};\n  height: 50px;\n  background: var(--purple);\n}`,
         renderItems: 1,
@@ -118,20 +110,19 @@ To rectify this historical flaw, CSS introduced new sub-variants:
         name: 'vmin & vmax',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** The most aggressively responsive layout units in CSS. They algorithmically evaluate both the viewport width and height simultaneously, compare them, and dynamically select either the smaller or larger axis for geometric scaling.
+        description: `\`vmin\` uses whichever is smaller — the viewport width or height. \`vmax\` uses whichever is larger. They update automatically when the screen rotates.
 <span></span>
-**vmin (Viewport Minimum):**
-\`1vmin\` looks at both the height and width of the browser. Whichever magnitude is mathematically smaller right now, it takes 1% of THAT specific axis. 
-If you are holding an iPhone in Portrait mode (tall), the width is the smaller axis, so \`vmin\` derives from the width. The millisecond you rotate the phone mechanically into Landscape mode (wide), the height becomes the smaller axis, and \`vmin\` instantly shifts its calculation vector to the height.
+**vmin in action:**
+Portrait phone: width is smaller, so \`vmin\` measures from the width. Rotate to landscape: height is now smaller, so \`vmin\` switches to height. The element stays proportional in both orientations automatically.
 <span></span>
-**The Best Use-Case:**
-They are unparalleled for ensuring SVG models or Canvas elements never overflow the screen. Setting an element to \`width: 100vmin; height: 100vmin;\` guarantees a geometrically flawless square that will always stretch to exactly touch the edges of the smallest screen boundary, but mathematically cannot ever overflow the display, preventing scrollbars globally.`,
+**Best use case:**
+\`width: 100vmin; height: 100vmin\` creates a square that always fits perfectly on screen in any orientation — no overflow, no scrollbars. Great for canvases, images, and full-screen UI elements.`,
         values: ['10vmin', '50vmin', '100vmin', '50vmax'],
         default: '50vmin',
-        practice: 'Use `height: 80vmin; width: 80vmin;` on a Hero image or 3D canvas so it automatically scales flawlessly during device rotation.',
+        practice: 'Use `width: 80vmin; height: 80vmin` on a hero image — it scales cleanly on both portrait and landscape.',
         chips: [
-          { key: 'vmin', meaning: 'Locks relative to smallest physical axis' },
-          { key: 'vmax', meaning: 'Locks relative to largest physical axis' },
+          { key: 'vmin', meaning: 'Relative to the smaller viewport axis' },
+          { key: 'vmax', meaning: 'Relative to the larger viewport axis' },
         ],
         getCode: (val) => `.box {\n  width: ${val};\n  height: 50px;\n  background: var(--blue);\n}`,
         renderItems: 1,
@@ -146,42 +137,42 @@ They are unparalleled for ensuring SVG models or Canvas elements never overflow 
         name: 'ch (Character Unit)',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** \`ch\` is a phenomenally obscure but profoundly powerful typographical unit. 1 \`ch\` is equal to the exact geometric width of the zero character (\`0\`) within the currently rendered font-family and font-size.
+        description: `\`1ch\` equals the width of the \`0\` (zero) character in the current font and size. It's a typographic unit used to control how wide a block of text can be.
 <span></span>
-**The Reading Psychology:**
-Typographers universally agree that optimal reading legibility degrades rapidly if text lines are too long (the eye fatigues tracking back to the next line) or too short (the eye breaks rhythm constantly). The mathematical gold standard for prose reading is between 60 and 75 characters per line.
+**Why line length matters for reading:**
+Lines of text are easiest to read at 60–75 characters wide. Shorter and your eyes constantly snap back. Longer and they have to scan too far, causing fatigue.
 <span></span>
-**The implementation:**
-Instead of awkwardly guessing column pixel widths like \`max-width: 800px\` across different operating systems rendering different fonts, you simply declare \`max-width: 65ch\`. The layout engine evaluates the user's specific font file, calculates the pixel width of the zero character, multiplies it by 65, and perfectly constraints the paragraph boundary, guaranteeing flawless typographic psychological line lengths unconditionally.`,
+**The right way to set max-width:**
+Instead of guessing with \`max-width: 800px\` (which varies by font), write \`max-width: 65ch\`. The browser measures the font's zero character, multiplies by 65, and sets the perfect maximum line length — automatically, for any font.`,
         values: ['10ch', '30ch', '65ch'],
         default: '65ch',
-        practice: 'Apply `max-width: 65ch` globally to your `<article>` or `<p>` tags for immaculate article reading experiences.',
+        practice: 'Add `max-width: 65ch` to your `article` or `p` tags for comfortable, readable line lengths.',
         chips: [
-          { key: 'ch', meaning: 'Width of the "0" (zero) character glyph' },
-          { key: 'legibility', meaning: 'Used purely to constrain prose text lengths' },
+          { key: 'ch', meaning: 'Width of the "0" character in current font' },
+          { key: 'legibility', meaning: 'Used to constrain prose line length' },
         ],
-        getCode: (val) => `.box {\n  width: ${val};\n  background: var(--pink);\n  padding: 8px;\n  color: white;\n}\n/* Note how it bounds the test phrase width*/`,
+        getCode: (val) => `.box {\n  width: ${val};\n  background: var(--pink);\n  padding: 8px;\n  color: white;\n}\n/* Note how it bounds the text width */`,
         renderItems: 1,
-        isTextNode: true, // Custom flag to render text inside the demo instead of plain block
+        isTextNode: true,
       },
       {
         id: 'unit-percentages',
         name: '% (Percentage)',
         cssProperty: 'width',
         applies: 'any',
-        description: `**How it works:** The classic relative unit. It calculates its geometrical value strictly based on its immediate, physical DOM parent element.
+        description: `Percentage values are relative to the parent element. \`width: 50%\` means half of the parent's width.
 <span></span>
-**The Flow Limitation:**
-While widely utilized, traditional developers heavily rely on percentages for layout grids (e.g., \`width: 33.33%\`). This is largely considered legacy architecture due to extreme fragility. Percents are completely blind to surrounding margins, borders, and paddings unless you strictly enforce \`box-sizing: border-box\` universally. More critically, percentages cannot dynamically utilize Flexbox/Grid Free-Space mathematical engines, causing destructive wrapping algorithms.
+**The layout limitation:**
+Using percentages for columns (like \`width: 33.33%\`) is considered outdated. They can't account for gaps cleanly and require \`box-sizing: border-box\` everywhere. Flexbox and CSS Grid handle this far better with \`flex: 1\` and \`fr\` units.
 <span></span>
-**Percentage Heights (The Trap):**
-The most common confusion in CSS is why \`height: 100%\` randomly refuses to render. Due to the W3C block formatting context, vertical flow defaults to \`auto\` (shrinking to accommodate text). A child element mathematically cannot calculate 100% height if its parent has an \`auto\` height... because 100% of "undefined" equals undefined. To successfully utilize \`%\` for height, there must be an unbroken daisy-chain of explicit heights set down the entire DOM tree all the way to the \`<html>\` root string.`,
+**Why height: 100% often fails:**
+For percentage heights to work, every parent up the tree must have an explicit height set. If any parent's height is \`auto\` (the default), the percentage has nothing to calculate against and just gets ignored.`,
         values: ['25%', '50%', '75%', '100%'],
         default: '50%',
-        practice: 'Stop using percentage widths for layout architectures. Delegate layouts entirely to Flex/Grid fraction (`fr`) engines.',
+        practice: 'Stop using percentage widths for layout columns. Use `flex: 1` or CSS Grid `fr` units instead.',
         chips: [
-          { key: '%', meaning: 'Strict mathematical ratio of direct parent node' },
-          { key: 'height bug', meaning: 'Fails unless parent explicitly holds altitude' },
+          { key: '%', meaning: 'Ratio of direct parent size' },
+          { key: 'height bug', meaning: 'Fails if parent has no explicit height' },
         ],
         getCode: (val) => `/* The parent holds 100% width context */\n.box {\n  width: ${val};\n  height: 50px;\n  background: var(--teal);\n}`,
         renderItems: 1,
