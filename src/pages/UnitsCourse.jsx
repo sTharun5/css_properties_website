@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
+import { Ruler } from 'lucide-react';
 import { PatternCard } from '../components/Patterns.jsx';
 import { unitsSections, unitsPatterns } from '../data/unitsData';
 
@@ -36,7 +37,10 @@ function UnitsCourse() {
       <div className="properties-list">
         {selectedSection.intro && (
           <div className="section-intro card hover-glow">
-            <h2>{selectedSection.intro.title}</h2>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+              <Ruler color="var(--accent-info)" size={24} />
+              {selectedSection.intro.title}
+            </h2>
             {/* Split paragraphs by line break for clean rendering */}
             {selectedSection.intro.body.split('\\n').map((paragraph, idx) => (
               <p key={idx} dangerouslySetInnerHTML={{ __html: paragraph.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>') }} />

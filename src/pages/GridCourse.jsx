@@ -1,5 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard.jsx';
+import { Grid } from 'lucide-react';
 import { PatternCard } from '../components/Patterns.jsx';
 import { gridSections, gridPatterns } from '../data/gridData.js';
 import { useMemo } from 'react';
@@ -11,7 +12,10 @@ function SectionIntro({ intro }) {
     .replace(/`([^`]+)`/g, '<code style="font-family:\'Fira Code\',monospace;color:var(--accent-info);background:rgba(62,207,255,.1);padding:1px 6px;border-radius:4px;font-size:.85em">$1</code>');
   return (
     <div className="intro-card grid-intro">
-      <h3>{intro.title}</h3>
+      <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Grid color="var(--accent-grid)" size={20} />
+        {intro.title}
+      </h3>
       <p dangerouslySetInnerHTML={{ __html: html(intro.body) }} />
       <div className="axis-visual-row">
         <div className="axis-box">

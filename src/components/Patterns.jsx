@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { LayoutTemplate } from 'lucide-react';
 
 // Flex real-world pattern demos
 function FlexPatternDemo({ type }) {
@@ -70,6 +71,7 @@ export function PatternCard({ pattern, isGrid }) {
   return (
     <div className="pattern-card">
       <div className="pattern-title">
+        <LayoutTemplate size={18} color="var(--text-dim)" />
         {pattern.name}
         <button className={`copy-btn ${copied ? 'copied' : ''}`} style={{ marginLeft: 'auto' }} onClick={copy}>
           {copied ? '✓ Copied!' : 'Copy'}
