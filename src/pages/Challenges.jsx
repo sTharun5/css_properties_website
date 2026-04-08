@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { Award, ChevronRight, Gamepad2, CheckCircle2, LayoutTemplate, Grid, Layers } from 'lucide-react';
+import { Award, ChevronRight, Gamepad2, CheckCircle2, LayoutTemplate, Grid, Layers, Maximize, Palette, MousePointerClick } from 'lucide-react';
 import { flexChallenges } from '../data/challenges/flexChallenges';
 import { gridChallenges } from '../data/challenges/gridChallenges';
 import { animationsChallenges } from '../data/challenges/animationsChallenges';
+import { responsiveChallenges } from '../data/challenges/responsiveChallenges';
+import { themingChallenges } from '../data/challenges/themingChallenges';
+import { selectorsChallenges } from '../data/challenges/selectorsChallenges';
 
 const catalogs = {
   flex: { name: 'Flexbox Architecture', data: flexChallenges, icon: LayoutTemplate, color: 'var(--accent-flex)' },
   grid: { name: 'CSS Grid Mastery', data: gridChallenges, icon: Grid, color: 'var(--accent-grid)' },
-  animations: { name: 'Animations & Physics', data: animationsChallenges, icon: Layers, color: '#f472b6' }
+  animations: { name: 'Animations & Physics', data: animationsChallenges, icon: Layers, color: '#f472b6' },
+  responsive: { name: 'Responsive Layouts', data: responsiveChallenges, icon: Maximize, color: '#fb923c' },
+  theming: { name: 'CSS Variables', data: themingChallenges, icon: Palette, color: '#10b981' },
+  selectors: { name: 'Advanced Selectors', data: selectorsChallenges, icon: MousePointerClick, color: '#ef4444' }
 };
 
 export default function Challenges() {
