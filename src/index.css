@@ -35,6 +35,10 @@ html { scroll-behavior: smooth; font-size: 16px; }
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: var(--bg);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(124, 106, 255, 0.05), transparent 30%),
+    radial-gradient(circle at 85% 30%, rgba(15, 219, 140, 0.04), transparent 30%);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
@@ -124,9 +128,11 @@ body {
   position: sticky;
   top: 0;
   z-index: 200;
-  background: rgba(11,13,26,.92);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(11, 13, 26, 0.65);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -217,24 +223,31 @@ body {
 
 /* ── PROPERTY CARD ── */
 .prop-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(22, 25, 41, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-lg);
   margin-bottom: 24px;
   overflow: hidden;
-  transition: border-color .25s, box-shadow .25s, transform .2s;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 .prop-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent-flex), var(--accent-info));
+  background: linear-gradient(90deg, var(--accent-flex), var(--accent-info), var(--accent-grid));
   opacity: 0;
-  transition: opacity .25s;
+  transition: opacity .4s ease;
 }
-.prop-card:hover { border-color: var(--border-light); box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(124,106,255,.12); transform: translateY(-1px); }
+.prop-card:hover { 
+  border-color: rgba(255, 255, 255, 0.12); 
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(124, 106, 255, 0.2); 
+  transform: translateY(-3px); 
+}
 .prop-card:hover::before { opacity: 1; }
 
 .prop-card-header {
@@ -398,7 +411,8 @@ body {
 .code-display {
   flex: 1;
   padding: 20px;
-  background: var(--code-bg);
+  background: rgba(4, 5, 10, 0.5);
+  box-shadow: inset 0 2px 24px rgba(0,0,0,0.4);
   font-family: 'Fira Code', monospace;
   font-size: .82rem;
   line-height: 1.8;
@@ -426,16 +440,27 @@ body {
   padding: 5px 14px;
   border-radius: 8px;
   border: 1px solid var(--border-light);
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
   color: var(--text-dim);
   font-size: .78rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all .18s;
+  transition: all .25s cubic-bezier(0.25, 0.8, 0.25, 1);
   font-family: 'Fira Code', monospace;
 }
-.val-btn:hover { color: var(--text); border-color: var(--accent-flex2); }
-.val-btn.active { background: var(--accent-flex); border-color: var(--accent-flex); color: #fff; }
+.val-btn:hover { 
+  color: var(--text); 
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.val-btn.active { 
+  background: rgba(124,106,255,.15); 
+  color: #fff; 
+  border-color: var(--accent-flex); 
+  box-shadow: 0 0 16px rgba(124,106,255,0.3);
+}
 .val-btn.active.grid-btn { background: var(--accent-grid); border-color: var(--accent-grid); color: #000; }
 
 /* ── DEMO STAGE ── */
@@ -606,18 +631,21 @@ input[type=range]::-webkit-slider-thumb {
 
 /* ── SECTION INTRO CARD ── */
 .intro-card {
-  background: linear-gradient(135deg, rgba(124,106,255,.08), rgba(62,207,255,.04));
-  border: 1px solid rgba(124,106,255,.25);
+  background: linear-gradient(135deg, rgba(124,106,255,.12), rgba(62,207,255,.05));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(124,106,255,.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 32px;
   margin-bottom: 32px;
 }
 .intro-card.grid-intro {
-  background: linear-gradient(135deg, rgba(15,219,140,.07), rgba(62,245,168,.03));
-  border-color: rgba(15,219,140,.25);
+  background: linear-gradient(135deg, rgba(15,219,140,.1), rgba(62,245,168,.04));
+  border-color: rgba(15,219,140,.3);
 }
-.intro-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-.intro-card p { color: var(--text-dim); font-size: .92rem; line-height: 1.7; }
+.intro-card h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.01em; }
+.intro-card p { color: var(--text); font-size: .95rem; line-height: 1.8; opacity: 0.9; }
 .axis-visual-row {
   display: flex;
   gap: 16px;
@@ -679,12 +707,12 @@ input[type=range]::-webkit-slider-thumb {
 /* ── SIDEBAR ── */
 .prop-sidebar {
   position: sticky;
-  top: 112px;
-  height: calc(100vh - 112px);
+  top: 65px; /* global nav height approx */
+  height: calc(100vh - 65px);
   overflow-y: auto;
-  border-right: 1px solid var(--border);
-  padding: 20px 0;
-  background: var(--surface);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 32px 0;
+  background: transparent;
   scrollbar-width: thin;
 }
 @media (max-width: 900px) { .prop-sidebar { display: none; } }
