@@ -1,0 +1,30 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Minimal Dark Background -->
+  <rect width="256" height="256" rx="56" fill="#111327"/>
+  <!-- Decorative border ring -->
+  <rect x="6" y="6" width="244" height="244" rx="50" stroke="#2e3459" stroke-width="4"/>
+  
+  <!-- Left thick block (Flexbox representation) -->
+  <rect x="64" y="64" width="40" height="128" rx="12" fill="url(#gradFlex)"/>
+  
+  <!-- Right top box (Grid box 1) -->
+  <rect x="124" y="64" width="68" height="54" rx="12" fill="url(#gradGrid1)"/>
+  
+  <!-- Right bottom box (Grid box 2) -->
+  <rect x="124" y="138" width="68" height="54" rx="12" fill="url(#gradGrid2)"/>
+
+  <defs>
+    <linearGradient id="gradFlex" x1="64" y1="64" x2="104" y2="192" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9f91ff"/>
+      <stop offset="100%" stop-color="#7c6aff"/>
+    </linearGradient>
+    <linearGradient id="gradGrid1" x1="124" y1="64" x2="192" y2="118" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3ef5a8"/>
+      <stop offset="100%" stop-color="#0fdb8c"/>
+    </linearGradient>
+    <linearGradient id="gradGrid2" x1="124" y1="138" x2="192" y2="192" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3ecfff"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+</svg>
