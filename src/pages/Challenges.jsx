@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { Award, ChevronRight, Gamepad2, CheckCircle2, LayoutTemplate, Grid } from 'lucide-react';
+import { Award, ChevronRight, Gamepad2, CheckCircle2, LayoutTemplate, Grid, Layers } from 'lucide-react';
 import { flexChallenges } from '../data/challenges/flexChallenges';
 import { gridChallenges } from '../data/challenges/gridChallenges';
+import { animationsChallenges } from '../data/challenges/animationsChallenges';
 
 const catalogs = {
   flex: { name: 'Flexbox Architecture', data: flexChallenges, icon: LayoutTemplate, color: 'var(--accent-flex)' },
-  grid: { name: 'CSS Grid Mastery', data: gridChallenges, icon: Grid, color: 'var(--accent-grid)' }
+  grid: { name: 'CSS Grid Mastery', data: gridChallenges, icon: Grid, color: 'var(--accent-grid)' },
+  animations: { name: 'Animations & Physics', data: animationsChallenges, icon: Layers, color: '#f472b6' }
 };
 
 export default function Challenges() {
