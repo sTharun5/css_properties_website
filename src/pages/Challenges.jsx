@@ -96,7 +96,7 @@ export default function Challenges() {
                 display: 'flex', alignItems: 'center', gap: '8px', 
                 padding: '10px 20px', borderRadius: '8px', 
                 background: isActive ? 'var(--surface)' : 'transparent',
-                border: isActive ? \`1px solid \${cat.color}\` : '1px solid var(--border)',
+                border: isActive ? `1px solid ${cat.color}` : '1px solid var(--border)',
                 color: isActive ? 'white' : 'var(--text-dim)',
                 cursor: 'pointer', fontWeight: 600, transition: 'all 0.2s'
               }}
