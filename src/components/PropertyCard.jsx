@@ -1,5 +1,47 @@
 import { useState } from 'react';
 
+// ── Rich description renderer ──────────────────────────────
+function DescriptionBlock({ text, accentClass }) {
+  if (!text) return null;
+
+  const inlineFormat = (str) =>
+    str
+      .replace(/`([^`]+)`/g, '<code class="desc-code">$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // Split on <span></span> section boundaries used in data files
+  const rawSections = text.split(/<span><\/span>/g).map(s => s.trim()).filter(Boolean);
+
+  const blocks = rawSections
+    .map((section, idx) => {
+      const lines = section.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return null;  // ← null-safety fix
+
+      // Detect bold-only heading lines: **Title:** or **Title**
+      const headingMatch = lines[0].match(/^\*\*([^*]+)\*\*[:\s]*$/);
+      const heading = headingMatch ? headingMatch[1].replace(/:$/, '').trim() : null;
+      const body = heading ? lines.slice(1) : lines;
+
+      return { heading, body, idx };
+    })
+    .filter(Boolean);  // ← remove nulls before rendering
+
+  return (
+    <div className="desc-block-wrap">
+      {blocks.map(({ heading, body, idx }) => (
+        <div key={idx} className={`desc-block ${heading ? `desc-block--section ${accentClass || ''}` : 'desc-block--lead'}`}>
+          {heading && <div className="desc-section-title">{heading}</div>}
+          <div className="desc-block-body">
+            {body.map((line, li) => (
+              <p key={li} className="desc-para" dangerouslySetInnerHTML={{ __html: inlineFormat(line) }} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ── Syntax-highlighted code panel ──────────────────────────
 function CodeDisplay({ code, isGrid }) {
   const [copied, setCopied] = useState(false);
@@ -177,21 +219,29 @@ export default function PropertyCard({ prop, isGrid, isUnit }) {
   const [activeVal, setActiveVal] = useState(prop.default);
   const code = prop.getCode(activeVal);
 
+  const accentClass = isGrid ? 'desc-accent--grid' : isUnit ? 'desc-accent--unit' : '';
+
+  // Badge label: units use a neutral 'any' instead of container/item
+  const applyLabel = prop.applies === 'container'
+    ? '📦 container'
+    : prop.applies === 'any'
+    ? '📐 any element'
+    : '🧩 item';
+  const applyClass = prop.applies === 'container'
+    ? 'applies-container'
+    : prop.applies === 'any'
+    ? 'applies-any'
+    : 'applies-item';
+
   return (
     <div className="prop-card" id={prop.id}>
       <div className="prop-card-header">
         <div style={{ flex:1 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px', flexWrap:'wrap' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'12px', flexWrap:'wrap' }}>
             <span className="prop-name">{prop.name}</span>
-            <span className={`prop-applies ${prop.applies==='container' ? 'applies-container' : 'applies-item'}`}>
-              {prop.applies==='container' ? '📦 container' : '🧩 item'}
-            </span>
+            <span className={`prop-applies ${applyClass}`}>{applyLabel}</span>
           </div>
-          <div 
-            className="prop-desc" 
-            style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
-            dangerouslySetInnerHTML={{ __html: prop.description.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code style="font-family:\'Fira Code\',monospace;color:var(--accent-info);background:rgba(62,207,255,.1);padding:1px 6px;border-radius:4px;font-size:.85em">$1</code>') }} 
-          />
+          <DescriptionBlock text={prop.description} accentClass={accentClass} />
         </div>
       </div>
 

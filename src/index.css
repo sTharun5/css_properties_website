@@ -85,8 +85,8 @@ body {
   line-height: 1.1;
   position: relative;
 }
-.hero h1 .flex-word { background: linear-gradient(90deg, #7c6aff, #9f91ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.hero h1 .grid-word { background: linear-gradient(90deg, #0fdb8c, #3ef5a8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero h1 .flex-word { background: linear-gradient(90deg, #7c6aff, #9f91ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero h1 .grid-word { background: linear-gradient(90deg, #0fdb8c, #3ef5a8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .hero p {
   margin: 16px auto 0;
   color: var(--text-dim);
@@ -114,6 +114,7 @@ body {
   font-weight: 800;
   background: linear-gradient(90deg, var(--accent-flex), var(--accent-info));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .hero-stat .lbl { font-size: .72rem; color: var(--text-dim); margin-top: 2px; }
@@ -204,7 +205,15 @@ body {
 .pill-beginner { background: rgba(56,189,248,.15); color: #38bdf8; border: 1px solid rgba(56,189,248,.3); }
 .pill-intermediate { background: rgba(251,191,36,.12); color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }
 .pill-advanced { background: rgba(239,68,68,.12); color: #ef4444; border: 1px solid rgba(239,68,68,.3); }
-.section-header h2 { font-size: 1.5rem; font-weight: 800; }
+.section-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  background: linear-gradient(90deg, var(--text) 60%, var(--text-dim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* ── PROPERTY CARD ── */
 .prop-card {
@@ -213,12 +222,23 @@ body {
   border-radius: var(--radius-lg);
   margin-bottom: 24px;
   overflow: hidden;
-  transition: border-color .2s, box-shadow .2s;
+  transition: border-color .25s, box-shadow .25s, transform .2s;
+  position: relative;
 }
-.prop-card:hover { border-color: var(--border-light); box-shadow: var(--shadow); }
+.prop-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-flex), var(--accent-info));
+  opacity: 0;
+  transition: opacity .25s;
+}
+.prop-card:hover { border-color: var(--border-light); box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(124,106,255,.12); transform: translateY(-1px); }
+.prop-card:hover::before { opacity: 1; }
 
 .prop-card-header {
-  padding: 20px 24px;
+  padding: 22px 24px 20px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: flex-start;
@@ -227,9 +247,13 @@ body {
 }
 .prop-name {
   font-family: 'Fira Code', monospace;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--accent-info);
+  font-size: 1.15rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent-info), var(--accent-flex2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -.01em;
 }
 .prop-applies {
   font-size: .7rem;
@@ -240,7 +264,105 @@ body {
 }
 .applies-container { background: rgba(124,106,255,.15); color: var(--accent-flex2); border: 1px solid rgba(124,106,255,.3); }
 .applies-item { background: rgba(255,107,157,.12); color: #ff6b9d; border: 1px solid rgba(255,107,157,.3); }
-.prop-desc { color: var(--text-dim); font-size: .9rem; line-height: 1.6; flex: 1 1 100%; white-space: pre-line; }
+.applies-any { background: rgba(62,207,255,.1); color: var(--accent-info); border: 1px solid rgba(62,207,255,.25); }
+
+/* ── DESCRIPTION BLOCK SYSTEM ── */
+.desc-block-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 100%;
+}
+
+/* Lead paragraph – left-border accent, soft bg */
+.desc-block--lead {
+  padding: 13px 16px;
+  background: rgba(255,255,255,.025);
+  border-left: 3px solid var(--accent-flex);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Section callout blocks */
+.desc-block--section {
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ── Flex accent (default) */
+.desc-section-title {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--accent-flex2);
+  background: rgba(124,106,255,.08);
+  border-bottom: 1px solid rgba(124,106,255,.15);
+  padding: 7px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.desc-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-flex);
+  flex-shrink: 0;
+}
+
+/* ── Grid accent */
+.desc-accent--grid .desc-section-title {
+  color: var(--accent-grid2);
+  background: rgba(15,219,140,.07);
+  border-bottom-color: rgba(15,219,140,.18);
+}
+.desc-accent--grid .desc-section-title::before { background: var(--accent-grid); }
+.desc-accent--grid.desc-block--lead { border-left-color: var(--accent-grid); }
+
+/* ── Unit accent */
+.desc-accent--unit .desc-section-title {
+  color: var(--accent-info);
+  background: rgba(62,207,255,.06);
+  border-bottom-color: rgba(62,207,255,.18);
+}
+.desc-accent--unit .desc-section-title::before { background: var(--accent-info); }
+.desc-accent--unit.desc-block--lead { border-left-color: var(--accent-info); }
+
+/* Body area wrapping all paragraphs in a section */
+.desc-block-body { padding: 2px 0; }
+
+.desc-para {
+  color: var(--text);
+  font-size: .94rem;
+  line-height: 1.8;
+  padding: 7px 14px;
+  margin: 0;
+}
+.desc-block--lead .desc-para {
+  padding: 0;
+  font-size: .97rem;
+  line-height: 1.8;
+}
+
+.desc-para strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.desc-code {
+  font-family: 'Fira Code', monospace;
+  color: var(--accent-info);
+  background: rgba(62,207,255,.12);
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: .87em;
+  letter-spacing: -.01em;
+  word-break: break-word;
+}
 
 /* ── SPLIT PANEL ── */
 .split-panel {
@@ -390,6 +512,7 @@ body {
 .slider-wrap label { font-size: .78rem; color: var(--text-dim); min-width: 80px; }
 input[type=range] {
   -webkit-appearance: none;
+  appearance: none;
   height: 4px;
   background: var(--border-light);
   border-radius: 4px;
